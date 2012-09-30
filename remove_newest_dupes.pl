@@ -2,11 +2,13 @@
 
 use strict;
 
+# Specify external "cksum" tool to use to identify duplicate/unique files:
+my $CKSUM="md5sum";
+
 use constant RM_NEWEST => 1;
 use constant RM_OLDEST => 2;
 
 my $RM=RM_NEWEST;
-my $RM_CONDITION="newer";
 
 my $VERBOSE=0;
 my $DO_REMOVALS=0;
@@ -25,28 +27,41 @@ my $KEPT_FILES=0;
 # SUBS:
 
 sub usage {
-    print "\n";
-    print "Usage: $0\n";
-    print "  $0 [-h|-help] [-do] [-old] [-v] [<FILES>]";
-    print "\n";
-    print "    -h|help: Show this message\n";
-    print "\n";
-    print "    -do:  Doit - actually delete the selected files\n";
-    print "    -old: Removed oldest dupes\n";
-    print "    -v:   Increase verbosity\n";
-    print "\n";
-    print "e.g.";
-    print "  To remove newest duplicated files in current dir:\n";
-    print "    $0";
-    print "\n";
-    print "  To remove oldest duplicated files in current dir:\n";
-    print "    $0 -old";
-    print "\n";
-    print "  To remove oldest duplicated files from provided list:\n";
-    print "    $0 -old FILE1 FILE1_NEWER FILE1_VERYOLD FILE2 FILE2_OLD";
-    print "  Would remove files FILE1 FILE1_VERYOLD FILE2_OLD";
-    print "  Keeping oldest copies of FILE1, FILE2: FILE1_NEWER FILE2\n";
-    print "\n";
+
+## START USAGE: ########################################
+    print <<EOUSAGE;
+
+Usage: $0
+  $0 [-h|-help] [-do] [-old] [-v] [<FILES>]
+
+    -h|help: Show this message
+
+    -do:  Doit - actually delete the selected files
+    -old: Removed oldest dupes
+    -v:   Increase verbosity
+
+This script detects duplicate files and removes the newest duplicates
+  (or oldest if the -old option is specified)
+
+This can be useful for example if a cron script creates some daily status files
+e.g. the output of dpkg -l
+So we keep only the files as they change and not any intermediate duplicates.
+
+e.g.
+  To remove newest duplicated files in current dir:
+    $0
+
+  To remove oldest duplicated files in current dir:
+    $0 -old
+
+  To remove oldest duplicated files from provided list:
+    $0 -old FILE1 FILE1_NEWER FILE1_VERYOLD FILE2 FILE2_OLD
+  Would remove files FILE1 FILE1_VERYOLD FILE2_OLD";
+  Keeping oldest copies of FILE1, FILE2: FILE1_NEWER FILE2
+
+EOUSAGE
+## END USAGE: ##########################################
+
 }
 
 sub get_mtime {
@@ -80,7 +95,6 @@ while ($_ = shift(@ARGV)) {
 
     if (/^-old$/) {
         $RM=RM_OLDEST;
-        $RM_CONDITION="older";
         next;
     }
 
@@ -113,7 +127,7 @@ for $_ ( @ITEM_LIST ) {
     $SEEN{$_}=1;
     $UNIQUE_FILES++;
 
-    my $cksum = `cksum < $_`;
+    my $cksum = `$CKSUM < $_`;
     chomp($cksum);
 
     if ( ! defined( $XXXEST_FILE_BY_CKSUM{$cksum} ) ) {

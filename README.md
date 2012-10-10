@@ -21,4 +21,8 @@ remove_newest_dupes:
 This script detects duplicate files and removes the newest duplicates
   (or oldest if the -old option is specified)
 
+findFiles.pl
+-------------
+Tool to list files in a hierarchy ordered by size, atime, mtime, or ctime.
+
 

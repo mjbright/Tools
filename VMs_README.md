@@ -1,0 +1,33 @@
+
+
+
+TO make into a README
+=====================
+
+
+ python ./myvsphere.py esx 10.3.82.12 list
+ python ./myvsphere.py esx 10.3.82.12 resume
+ python ./myvsphere.py esx 10.3.82.12 resume HPSA91
+ python ./myvsphere.py esx 10.3.82.12 list HPSA91
+ python ./myvsphere.py esx 10.3.82.12 list
+ python ./myvsphere.py esx 10.3.82.12 list HPSA
+ python ./myvsphere.py esx 10.3.82.12 filter state suspend list HPSA
+ python ./myvsphere.py esx 10.3.82.12 filter state paused list HPSA
+ python ./myvsphere.py esx 10.3.82.12 filter status paused list HPSA
+ python ./myvsphere.py esx 10.3.82.12 match status paused list HPSA
+ python ./myvsphere.py esx 10.3.82.12 list HPSA
+ python ./myvsphere.py esx 10.3.82.12 match status paused list HPSA
+ du -s .virtualenvs/*
+ python ./myvsphere.py esx 10.3.82.12 match status paused list HPSA
+ python ./myvsphere.py esx 10.3.82.12 match status paused list
+ python ./myvsphere.py esx 10.3.82.12 match status suspended list
+ python ./myvsphere.py esx 10.3.82.12 match status "powered on" list
+ #python ./myvsphere.py esx 10.3.82.12 match status "powered on" suspend
+ python ./myvsphere.py esx 10.3.82.12 match \!name vcenter list
+ python ./myvsphere.py esx 10.3.82.12 match :name vcenter list
+ python ./myvsphere.py esx 10.3.82.12 match :name vcenter match :status SUSPENDED list
+ python ./myvsphere.py esx 10.3.82.12 match :name vcenter match status SUSPENDED list
+ python ./myvsphere.py esx 10.3.82.12 match :name vcenter match status SUSPENDED on
+ python ./myvsphere.py esx 10.3.82.12 match :name vcenter match status "powered on" shutdown
+ python ./myvsphere.py esx 10.3.82.12 match :name vcenter match status "powered on" off
+ python ./myvsphere.py esx 10.3.82.12 match status "powered on" off

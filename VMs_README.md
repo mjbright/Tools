@@ -1,6 +1,25 @@
 
 
 
+TODO
+=====================
+
+Plans for VMs.py
+
+-> Write core functionality as a Python module/class
+
+-> Reconsider cli-argument passing
+   - esxi/user/pass on command-line as an option
+     (as well as by envt variable, or stdin)
+   - allow to read commands from a file
+   - format "-e ESXi -u USER -p PASS" + <CMDS>
+     CMDS = "<CMD> [; <CMDS> ]"
+     CMD = " OPER <OPER_ARGS> - <VM_LIST>"
+
+-> Add functions
+   snapshots: list, create, delete, revert to last, revert to named
+
+
 TO make into a README
 =====================
 

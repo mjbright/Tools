@@ -116,14 +116,13 @@ sub showStats {
             $AVG    = int(10 * $AVG)/10;
             $MAX    = int(10 * $MAX)/10;
             if ($PING_HOST_TIMEOUT{$host} == 0) {
+	        print "$NUM   timeouts - avg ${AVG}s, max ${MAX}s\n";
+            } else {
                 #Still in timeout:
                 #$NUM += 1;
                 #my $AVG = ($PING_HOST_SUM_TIMEOUT{$host} + $PING_HOST_TMP_TIMEOUT{$host}) / $NUM;
-	        print "${NUM}+1 timeouts - avg ${AVG}s, max ${MAX}s\n";
-            } else {
-                $AVG    = int(10 * $AVG)/10;
-                $MAX    = int(10 * $MAX)/10;
-	        print "$NUM   timeouts - avg ${AVG}s, max ${MAX}s\n";
+                my $CNUM = $NUM - 1;
+	        print "${CNUM}+1 timeouts - avg ${AVG}s, max ${MAX}s\n";
             }
         } else {
 	    print"0 timeouts\n";

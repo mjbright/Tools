@@ -103,17 +103,28 @@ sub showStats {
         my $responsesPC = int(1000 * $PING_HOST_COUNTS{$host} / ($PINGS * $LOOP_COUNT))/10;
         my $delaysMS    = int(1000 * $PING_HOST_MSECS{$host}  / ($PINGS * $LOOP_COUNT))/1000;
         my $time=localtime();
-        print "$host responses[$responsesPC%] avg $delaysMS msec - ";
+        print "$host responses[$responsesPC%] avg ${delaysMS}ms - ";
 
 	## ## TEST CODE-START:
 	## $PING_HOST_TIMEOUTS{$host}++;
 	## ## TEST CODE-END:
 
 	if ( $PING_HOST_TIMEOUTS{$host} > 0) {
-            my $AVG = $PING_HOST_SUM_TIMEOUT{$host} / $PING_HOST_TIMEOUTS{$host}; # AVG secs
             my $NUM = $PING_HOST_TIMEOUTS{$host};
-            my $MAX = $PINGS * $PING_HOST_MAX_TIMEOUT{$host}; # MAX secs
-	    print"$NUM timeouts - avg $AVG sec, max $MAX sec\n";
+            my $AVG = $PING_HOST_SUM_TIMEOUT{$host} / $NUM; # AVG secs
+            my $MAX = $PING_HOST_MAX_TIMEOUT{$host}; # MAX secs
+            $AVG    = int(10 * $AVG)/10;
+            $MAX    = int(10 * $MAX)/10;
+            if ($PING_HOST_TIMEOUT{$host} == 0) {
+                #Still in timeout:
+                #$NUM += 1;
+                #my $AVG = ($PING_HOST_SUM_TIMEOUT{$host} + $PING_HOST_TMP_TIMEOUT{$host}) / $NUM;
+	        print "${NUM}+1 timeouts - avg ${AVG}s, max ${MAX}s\n";
+            } else {
+                $AVG    = int(10 * $AVG)/10;
+                $MAX    = int(10 * $MAX)/10;
+	        print "$NUM   timeouts - avg ${AVG}s, max ${MAX}s\n";
+            }
         } else {
 	    print"0 timeouts\n";
 	}
